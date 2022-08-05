@@ -19,7 +19,7 @@ const TaskColumn: FC<IDraggableElementProps> = ({
     <DroppableComponent droppableId={`${column.status}`}>
       {(provided: any) => (
         <div {...provided.droppableProps} ref={provided.innerRef}>
-          {tasks.map((task, index) => (
+          {tasks && tasks.map((task, index) => (
             <TaskCard key={task.id} task={task} index={index} />
           ))}
           {provided.placeholder}
