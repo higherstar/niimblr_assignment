@@ -7,7 +7,7 @@ interface ILayoutProps {
 
 const Layout: FC<ILayoutProps> = ({ children }) => {
   return (
-    <Box>
+    <Box p={6}>
       {children}
     </Box>
   )

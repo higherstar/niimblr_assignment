@@ -13,6 +13,8 @@ export const TaskColumnRoot = styled(Box)(() => ({
     padding: '10px',
     borderRadius: '6px',
     background: '#d4d4d4',
+    width: '250px',
+    height: 'fit-content',
   },
 
   [`& .${classes.columnHeader}`]: {

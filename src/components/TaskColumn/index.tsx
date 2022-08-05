@@ -1,25 +1,26 @@
 import React, { FC } from 'react'
 import Box from '@mui/material/Box';
 
-import { TaskColumnRoot, DroppableComponent, classes } from './style';
 import TaskCard from '../TaskCard'
+import { TaskColumnRoot, DroppableComponent, classes } from './style';
+import { ITask, ITaskColumn } from '../../interfaces/task.interface'
 
 interface IDraggableElementProps {
-  prefix: string;
-  elements: any[];
+  column: ITaskColumn;
+  tasks: ITask[];
 }
 
 const TaskColumn: FC<IDraggableElementProps> = ({
-  prefix,
-  elements
+  column,
+  tasks,
 }) => (
   <TaskColumnRoot className={classes.root}>
-    <Box className={classes.columnHeader}>{prefix}</Box>
-    <DroppableComponent droppableId={`${prefix}`}>
+    <Box className={classes.columnHeader}>{column.label}</Box>
+    <DroppableComponent droppableId={`${column.status}`}>
       {(provided: any) => (
         <div {...provided.droppableProps} ref={provided.innerRef}>
-          {elements.map((item, index) => (
-            <TaskCard key={item.id} item={item} index={index} />
+          {tasks.map((task, index) => (
+            <TaskCard key={task.id} task={task} index={index} />
           ))}
           {provided.placeholder}
         </div>

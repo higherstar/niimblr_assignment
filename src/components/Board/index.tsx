@@ -1,17 +1,20 @@
 import React, { FC, useState, useEffect } from 'react';
-import { Box } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 
-import DraggableElement from '../TaskColumn';
+import TaskColumn from '../TaskColumn';
 
 import { DragDropContextRoot, DragDropContextComponent, classes } from './style';
+import { ITaskColumn } from '../../interfaces/task.interface'
+import { DEFAULT_TASK_COLUMNS } from '../../constants/tasks.constant'
 
-const getItems = (count: number, prefix: any) =>
+const getItems = (count: number, status: string) =>
   Array.from({ length: count }, (v, k) => k).map((k) => {
     const randomId = Math.floor(Math.random() * 1000);
     return {
       id: `item-${randomId}`,
-      prefix,
-      content: `item ${randomId}`
+      status,
+      title: randomId.toString(),
+      description: `item ${randomId}`
     };
   });
 
@@ -31,11 +34,12 @@ const lists = ["todo", "inProgress", "done"];
 
 const generateLists = () =>
   lists.reduce(
-    (acc, listKey) => ({ ...acc, [listKey]: getItems(10, listKey) }),
+    (acc, status) => ({ ...acc, [status]: getItems(5, status) }),
     {}
   );
 
 const Board: FC = () => {
+  const [taskColumns, setTaskColumns] = useState<ITaskColumn[]>(DEFAULT_TASK_COLUMNS);
   const [elements, setElements] = useState<any>(generateLists());
 
   useEffect(() => {
@@ -67,15 +71,15 @@ const Board: FC = () => {
   return (
     <DragDropContextRoot>
       <DragDropContextComponent onDragEnd={onDragEnd}>
-        <Box className={classes.listGrid}>
-          {lists.map((listKey: string) => (
-            <DraggableElement
-              key={listKey}
-              elements={elements[listKey]}
-              prefix={listKey}
+        <Stack className={classes.listGrid} direction="row" spacing={2}>
+          {taskColumns.map((taskColumn: ITaskColumn, index) => (
+            <TaskColumn
+              key={index}
+              column={taskColumn}
+              tasks={elements[taskColumn.status]}
             />
           ))}
-        </Box>
+        </Stack>
       </DragDropContextComponent>
     </DragDropContextRoot>
   );

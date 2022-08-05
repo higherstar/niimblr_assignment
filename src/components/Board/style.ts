@@ -16,9 +16,7 @@ export const DragDropContextRoot = styled(Box)(() => ({
   },
 
   [`& .${classes.listGrid}`]: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr',
-    gridGap: '8px',
+    display: 'flex',
   }
 }));
 
