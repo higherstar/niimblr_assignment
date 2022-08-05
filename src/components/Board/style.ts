@@ -1,8 +1,8 @@
 import { styled } from '@mui/material/styles';
-import { Box } from '@mui/material'
+import Box from '@mui/material/Box'
 import { DragDropContext } from 'react-beautiful-dnd'
 
-const PREFIX = 'task-column';
+const PREFIX = 'board';
 export const classes = {
   root: `${PREFIX}-root`,
   listGrid: `${PREFIX}-list-grid`,
@@ -16,7 +16,6 @@ export const DragDropContextRoot = styled(Box)(({ theme }) => ({
     height: '100%',
     width: '100%',
     borderRadius: '6px',
-    overflow: 'auto',
   },
 
   [`& .${classes.listGrid}`]: {

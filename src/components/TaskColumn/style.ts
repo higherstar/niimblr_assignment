@@ -2,7 +2,7 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import { Droppable } from 'react-beautiful-dnd'
 
-const PREFIX = 'draggable-element';
+const PREFIX = 'draggable-column';
 export const classes = {
   root: `${PREFIX}-root`,
   columnHeader: `${PREFIX}-column-header`,

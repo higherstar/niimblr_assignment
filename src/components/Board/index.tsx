@@ -1,12 +1,17 @@
 import React, { FC, useState, useEffect } from 'react';
-import { Box, Button, Popover, Stack, TextField, IconButton } from '@mui/material'
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Popover from '@mui/material/Popover';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 
 import TaskColumn from '../TaskColumn';
-import { DragDropContextRoot, DragDropContextComponent, ColumnFormWrapper, classes } from './style';
 import { ITask, ITaskColumn, ITaskGroup } from '../../interfaces/task.interface'
 import { DEFAULT_TASK_COLUMNS, DEFAULT_TASKS } from '../../constants/tasks.constant'
+import { DragDropContextRoot, DragDropContextComponent, ColumnFormWrapper, classes } from './style';
 
 const removeFromList = (list: any, index: any) => {
   const result = Array.from(list);
@@ -77,16 +82,17 @@ const Board: FC = () => {
   };
 
   const handleAddColumn = () => {
+    const status = `${newColumn}_${Date.now()}`
     setTaskColumns([
       ...taskColumns,
       {
         label: newColumn,
-        status: newColumn,
+        status,
       }
     ]);
     setTaskGroup({
       ...taskGroup,
-      [newColumn]: tasks.filter((task) => task.status === newColumn),
+      [status]: tasks.filter((task) => task.status === status),
     });
     handleCloseAddColumnForm();
   };

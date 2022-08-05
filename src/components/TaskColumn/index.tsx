@@ -1,11 +1,17 @@
 import React, { FC, useState } from 'react'
-import { Box, Button, Card, CardContent, IconButton, Input } from '@mui/material'
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import IconButton from '@mui/material/IconButton';
+import Input from '@mui/material/Input';
+import Typography from '@mui/material/Typography';
 import CloseIcon from '@mui/icons-material/Close'
 import AddIcon from '@mui/icons-material/Add'
 
 import TaskCard from '../TaskCard'
-import { TaskColumnRoot, DroppableComponent, classes } from './style';
 import { ITask, ITaskColumn } from '../../interfaces/task.interface'
+import { TaskColumnRoot, DroppableComponent, classes } from './style';
 
 interface IDraggableElementProps {
   column: ITaskColumn;
@@ -38,7 +44,11 @@ const TaskColumn: FC<IDraggableElementProps> = ({
 
   return (
     <TaskColumnRoot className={classes.root}>
-      <Box className={classes.columnHeader}>{column.label}</Box>
+      <Box className={classes.columnHeader}>
+        <Typography variant="h6">
+          {column.label}
+        </Typography>
+      </Box>
       <DroppableComponent droppableId={`${column.status}`}>
         {(provided: any) => (
           <div {...provided.droppableProps} ref={provided.innerRef}>

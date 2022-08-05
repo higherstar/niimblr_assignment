@@ -1,4 +1,5 @@
 import Head from 'next/head'
+
 import Board from '../components/Board'
 import Layout from '../components/Layout'
 
@@ -14,10 +15,6 @@ export default function HomePage() {
       <Layout>
         <Board />
       </Layout>
-
-      <footer>
-
-      </footer>
     </div>
   )
 }

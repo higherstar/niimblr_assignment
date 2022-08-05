@@ -1,10 +1,9 @@
 import React, { FC } from 'react';
-import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography'
 
 import { TaskCardRoot, TaskCardElement } from './style'
 import { ITask } from '../../interfaces/task.interface'
-import { Typography } from '@mui/material'
 
 interface ITaskCardProps {
   task: ITask;
@@ -26,7 +25,7 @@ const TaskCard: FC<ITaskCardProps> = ({
             {...provided.dragHandleProps}
           >
             <CardContent>
-              <Typography variant="h6">{task.title}</Typography>
+              <Typography variant="subtitle2">{task.title}</Typography>
               <Typography variant="caption">{task.description}</Typography>
             </CardContent>
           </TaskCardElement>
