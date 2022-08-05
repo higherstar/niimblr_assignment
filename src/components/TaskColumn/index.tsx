@@ -1,9 +1,7 @@
-import React, { FC, ReactNode } from 'react'
-import { Droppable } from 'react-beautiful-dnd';
+import React, { FC } from 'react'
 import Box from '@mui/material/Box';
-import { styled } from '@mui/material/styles';
 
-import { DroppableElementRoot, classes } from './style';
+import { TaskColumnRoot, DroppableComponent, classes } from './style';
 import TaskCard from '../TaskCard'
 
 interface IDraggableElementProps {
@@ -11,13 +9,11 @@ interface IDraggableElementProps {
   elements: any[];
 }
 
-const DroppableComponent = styled(Droppable)(() => ({}));
-
-const DraggableElement: FC<IDraggableElementProps> = ({
+const TaskColumn: FC<IDraggableElementProps> = ({
   prefix,
   elements
 }) => (
-  <DroppableElementRoot className={classes.root}>
+  <TaskColumnRoot className={classes.root}>
     <Box className={classes.columnHeader}>{prefix}</Box>
     <DroppableComponent droppableId={`${prefix}`}>
       {(provided: any) => (
@@ -29,7 +25,7 @@ const DraggableElement: FC<IDraggableElementProps> = ({
         </div>
       )}
     </DroppableComponent>
-  </DroppableElementRoot>
+  </TaskColumnRoot>
 );
 
-export default DraggableElement;
+export default TaskColumn;

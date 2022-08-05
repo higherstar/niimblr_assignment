@@ -1,5 +1,6 @@
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import { Droppable } from 'react-beautiful-dnd'
 
 const PREFIX = 'draggable-element';
 export const classes = {
@@ -7,7 +8,7 @@ export const classes = {
   columnHeader: `${PREFIX}-column-header`,
 };
 
-export const DroppableElementRoot = styled(Box)(() => ({
+export const TaskColumnRoot = styled(Box)(() => ({
   [`&.${classes.root}`]: {
     padding: '10px',
     borderRadius: '6px',
@@ -19,3 +20,5 @@ export const DroppableElementRoot = styled(Box)(() => ({
     marginBottom: '20px',
   }
 }));
+
+export const DroppableComponent = styled(Droppable)();

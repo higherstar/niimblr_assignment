@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import { Draggable } from 'react-beautiful-dnd';
 
-const PREFIX = 'draggable-element';
+const PREFIX = 'task-card';
 export const classes = {
   dragItem: `${PREFIX}-drag-item`,
 };

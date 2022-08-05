@@ -1,4 +1,6 @@
 import Head from 'next/head'
+import Board from '../components/Board'
+import Layout from '../components/Layout'
 
 export default function HomePage() {
   return (
@@ -9,8 +11,9 @@ export default function HomePage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-      </main>
+      <Layout>
+        <Board />
+      </Layout>
 
       <footer>
 
