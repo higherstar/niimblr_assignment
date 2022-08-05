@@ -1,10 +1,12 @@
 import React, { FC, useState, useEffect } from 'react';
-import { Box, Stack } from '@mui/material'
+import { Box, Button, Popover, Stack, TextField, IconButton } from '@mui/material'
+import AddIcon from '@mui/icons-material/Add';
+import CloseIcon from '@mui/icons-material/Close';
 
 import TaskColumn from '../TaskColumn';
 
-import { DragDropContextRoot, DragDropContextComponent, classes } from './style';
-import { ITask, ITaskColumn } from '../../interfaces/task.interface'
+import { DragDropContextRoot, DragDropContextComponent, ColumnFormWrapper, classes } from './style';
+import { ITask, ITaskColumn, ITaskGroup } from '../../interfaces/task.interface'
 import { DEFAULT_TASK_COLUMNS, DEFAULT_TASKS } from '../../constants/tasks.constant'
 
 const removeFromList = (list: any, index: any) => {
@@ -22,10 +24,12 @@ const addToList = (list: any, index: number, element: any) => {
 const Board: FC = () => {
   const [taskColumns, setTaskColumns] = useState<ITaskColumn[]>(DEFAULT_TASK_COLUMNS);
   const [tasks, setTasks] = useState<ITask[]>(DEFAULT_TASKS);
-  const [elements, setElements] = useState<any>({});
+  const [taskGroup, setTaskGroup] = useState<ITaskGroup>({});
+  const [columnFormAnchor, setColumnFormAnchor] = useState<HTMLButtonElement | null>(null);
+  const [newColumn, setNewColumn] = useState<string>('');
 
   useEffect(() => {
-    const taskGroups = tasks.reduce((groups: any, task: ITask) => {
+    const group = tasks.reduce((groups: any, task: ITask) => {
       const status = task.status;
       if (groups[status]) {
         const group = [...groups[status], task];
@@ -34,14 +38,14 @@ const Board: FC = () => {
         return {...groups, [status]: [task] };
       }
     }, {});
-    setElements(taskGroups);
+    setTaskGroup(group);
   }, []);
 
   const onDragEnd = (result: any) => {
     if (!result.destination) {
       return;
     }
-    const listCopy: any = { ...elements };
+    const listCopy: any = { ...taskGroup };
 
     const sourceList = listCopy[result.source.droppableId];
 
@@ -58,10 +62,34 @@ const Board: FC = () => {
       removedElement
     );
 
-    setElements(listCopy);
+    setTaskGroup(listCopy);
     setTasks(tasks.map((task) => task.id === result.draggedId
       ? { ...task, status: result.destination.droppableId }
       : task));
+  };
+
+  const handleShowAddColumnForm = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setColumnFormAnchor(event.currentTarget);
+  };
+
+  const handleCloseAddColumnForm = () => {
+    setColumnFormAnchor(null);
+    setNewColumn('');
+  };
+
+  const handleAddColumn = () => {
+    setTaskColumns([
+      ...taskColumns,
+      {
+        label: newColumn,
+        status: newColumn,
+      }
+    ]);
+    setTaskGroup({
+      ...taskGroup,
+      [newColumn]: tasks.filter((task) => task.status === newColumn),
+    });
+    handleCloseAddColumnForm();
   };
 
   return (
@@ -72,9 +100,49 @@ const Board: FC = () => {
             <TaskColumn
               key={index}
               column={taskColumn}
-              tasks={elements[taskColumn.status]}
+              tasks={taskGroup[taskColumn.status]}
             />
           ))}
+
+          <Box className={classes.addColumnFormWrapper}>
+            <Button
+              className={classes.addColumnButton}
+              startIcon={<AddIcon />}
+              variant="outlined"
+              onClick={handleShowAddColumnForm}
+            >
+              Add Column
+            </Button>
+            <Popover
+              open={!!columnFormAnchor}
+              anchorEl={columnFormAnchor}
+              onClose={handleCloseAddColumnForm}
+              anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+            >
+              <ColumnFormWrapper>
+                <TextField
+                  className={classes.columnInput}
+                  variant="outlined"
+                  size="small"
+                  value={newColumn}
+                  onChange={(e) => setNewColumn(e.target.value)}
+                />
+                <Button disabled={!newColumn} onClick={handleAddColumn}>
+                  Add
+                </Button>
+                <IconButton onClick={handleCloseAddColumnForm}>
+                  <CloseIcon />
+                </IconButton>
+              </ColumnFormWrapper>
+            </Popover>
+          </Box>
         </Stack>
       </DragDropContextComponent>
     </DragDropContextRoot>

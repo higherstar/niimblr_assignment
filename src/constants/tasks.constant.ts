@@ -28,5 +28,11 @@ export const DEFAULT_TASKS = [
     id: "item-014",
     status: "done",
     title: "React Simple",
+  },
+  {
+    description: "This is a vue template task ",
+    id: "item-015",
+    status: "Review",
+    title: "Vue Template",
   }
 ]

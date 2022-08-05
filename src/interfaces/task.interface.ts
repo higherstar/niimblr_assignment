@@ -9,3 +9,7 @@ export interface ITaskColumn {
   status: string;
   label: string;
 }
+
+export interface ITaskGroup {
+  [status: string]: ITask[],
+}
