@@ -4,7 +4,6 @@ import AddIcon from '@mui/icons-material/Add';
 import CloseIcon from '@mui/icons-material/Close';
 
 import TaskColumn from '../TaskColumn';
-
 import { DragDropContextRoot, DragDropContextComponent, ColumnFormWrapper, classes } from './style';
 import { ITask, ITaskColumn, ITaskGroup } from '../../interfaces/task.interface'
 import { DEFAULT_TASK_COLUMNS, DEFAULT_TASKS } from '../../constants/tasks.constant'
@@ -92,8 +91,19 @@ const Board: FC = () => {
     handleCloseAddColumnForm();
   };
 
+  const handleAddTask = (newTask: ITask) => {
+    setTasks([...tasks, newTask]);
+    setTaskGroup({
+      ...taskGroup,
+      [newTask.status]: [
+        ...taskGroup[newTask.status],
+        newTask,
+      ]
+    })
+  };
+
   return (
-    <DragDropContextRoot>
+    <DragDropContextRoot className={classes.root}>
       <DragDropContextComponent onDragEnd={onDragEnd}>
         <Stack className={classes.listGrid} direction="row" spacing={2}>
           {taskColumns.map((taskColumn: ITaskColumn, index) => (
@@ -101,6 +111,7 @@ const Board: FC = () => {
               key={index}
               column={taskColumn}
               tasks={taskGroup[taskColumn.status]}
+              onAddTask={handleAddTask}
             />
           ))}
 
@@ -134,7 +145,7 @@ const Board: FC = () => {
                   value={newColumn}
                   onChange={(e) => setNewColumn(e.target.value)}
                 />
-                <Button disabled={!newColumn} onClick={handleAddColumn}>
+                <Button variant="contained" disabled={!newColumn} onClick={handleAddColumn}>
                   Add
                 </Button>
                 <IconButton onClick={handleCloseAddColumnForm}>

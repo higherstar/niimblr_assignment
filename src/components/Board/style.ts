@@ -11,13 +11,12 @@ export const classes = {
   columnInput: `${PREFIX}-column-input`,
 };
 
-export const DragDropContextRoot = styled(Box)(() => ({
+export const DragDropContextRoot = styled(Box)(({ theme }) => ({
   [`&.${classes.root}`]: {
-    padding: '20px',
-    border: '4px solid indianred',
-    borderRadius: '6px',
+    height: '100%',
     width: '100%',
-    overFlow: 'auto',
+    borderRadius: '6px',
+    overflow: 'auto',
   },
 
   [`& .${classes.listGrid}`]: {
@@ -25,6 +24,7 @@ export const DragDropContextRoot = styled(Box)(() => ({
   },
 
   [`& .${classes.addColumnFormWrapper}`]: {
+    minWidth: '250px',
     width: '250px',
   },
 
@@ -36,6 +36,7 @@ export const DragDropContextRoot = styled(Box)(() => ({
 export const DragDropContextComponent = styled(DragDropContext)();
 
 export const ColumnFormWrapper = styled(Box)(() => ({
+  minWidth: '250px',
   width: '250px',
   padding: '6px',
   [`& .${classes.columnInput}`]: {

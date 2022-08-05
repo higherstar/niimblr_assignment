@@ -6,13 +6,15 @@ const PREFIX = 'draggable-element';
 export const classes = {
   root: `${PREFIX}-root`,
   columnHeader: `${PREFIX}-column-header`,
+  newTaskForm: `${PREFIX}-new-task-form`,
 };
 
-export const TaskColumnRoot = styled(Box)(() => ({
+export const TaskColumnRoot = styled(Box)(({ theme }) => ({
   [`&.${classes.root}`]: {
     padding: '10px',
     borderRadius: '6px',
-    background: '#d4d4d4',
+    background: theme.palette.grey[300],
+    minWidth: '250px',
     width: '250px',
     height: 'fit-content',
   },
@@ -20,7 +22,8 @@ export const TaskColumnRoot = styled(Box)(() => ({
   [`& .${classes.columnHeader}`]: {
     textTransform: 'uppercase',
     marginBottom: '20px',
-  }
+  },
+
 }));
 
 export const DroppableComponent = styled(Droppable)();
