@@ -16,13 +16,15 @@ import { TaskColumnRoot, DroppableComponent, classes } from './style';
 interface IDraggableElementProps {
   column: ITaskColumn;
   tasks: ITask[];
-  onAddTask: (task: ITask) => void
+  onAddTask: (task: ITask) => void;
+  onRemoveTask: (id: string) => void;
 }
 
 const TaskColumn: FC<IDraggableElementProps> = ({
   column,
   tasks,
   onAddTask,
+  onRemoveTask,
 }) => {
   const [newTaskTitle, setNewTaskTitle] = useState<string>('');
   const [showNewTaskForm, setShowNewTaskForm] = useState(false);
@@ -53,7 +55,12 @@ const TaskColumn: FC<IDraggableElementProps> = ({
         {(provided: any) => (
           <div {...provided.droppableProps} ref={provided.innerRef}>
             {tasks && tasks.map((task, index) => (
-              <TaskCard key={task.id} task={task} index={index} />
+              <TaskCard
+                key={task.id}
+                task={task}
+                index={index}
+                onRemoveTask={onRemoveTask}
+              />
             ))}
             {provided.placeholder}
           </div>

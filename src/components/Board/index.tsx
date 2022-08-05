@@ -13,14 +13,14 @@ import { ITask, ITaskColumn, ITaskGroup } from '../../interfaces/task.interface'
 import { DEFAULT_TASK_COLUMNS, DEFAULT_TASKS } from '../../constants/tasks.constant'
 import { DragDropContextRoot, DragDropContextComponent, ColumnFormWrapper, classes } from './style';
 
-const removeFromList = (list: any, index: any) => {
-  const result = Array.from(list);
+const removeFromList = (list: any, index: any): [any, ITask[]] => {
+  const result: ITask[] = Array.from(list);
   const [removed] = result.splice(index, 1);
   return [removed, result];
 };
 
-const addToList = (list: any, index: number, element: any) => {
-  const result = Array.from(list);
+const addToList = (list: ITask[], index: number, element: ITask): ITask[] => {
+  const result: ITask[] = Array.from(list);
   result.splice(index, 0, element);
   return result;
 };
@@ -32,24 +32,37 @@ const Board: FC = () => {
   const [columnFormAnchor, setColumnFormAnchor] = useState<HTMLButtonElement | null>(null);
   const [newColumn, setNewColumn] = useState<string>('');
 
-  useEffect(() => {
-    const group = tasks.reduce((groups: any, task: ITask) => {
+  const groupTasks = (newTasks: ITask[]) => {
+    let groupKeys = Object.keys(taskGroup);
+    const group = newTasks.reduce((groups: any, task: ITask) => {
       const status = task.status;
       if (groups[status]) {
         const group = [...groups[status], task];
         return {...groups, [status]: group };
       } else {
+        if (groupKeys && groupKeys.length > 0) {
+          groupKeys = groupKeys.filter(key => key !== status);
+        }
         return {...groups, [status]: [task] };
       }
     }, {});
+
+    if (groupKeys && groupKeys.length > 0) {
+      groupKeys.forEach((groupKey) => group[groupKey] = []);
+    }
+
     setTaskGroup(group);
+  };
+
+  useEffect(() => {
+    groupTasks(DEFAULT_TASKS);
   }, []);
 
   const onDragEnd = (result: any) => {
     if (!result.destination) {
       return;
     }
-    const listCopy: any = { ...taskGroup };
+    const listCopy: ITaskGroup = { ...taskGroup };
 
     const sourceList = listCopy[result.source.droppableId];
 
@@ -67,7 +80,7 @@ const Board: FC = () => {
     );
 
     setTaskGroup(listCopy);
-    setTasks(tasks.map((task) => task.id === result.draggedId
+    setTasks(tasks.map((task) => task.id === result.draggableId
       ? { ...task, status: result.destination.droppableId }
       : task));
   };
@@ -105,7 +118,13 @@ const Board: FC = () => {
         ...taskGroup[newTask.status],
         newTask,
       ]
-    })
+    });
+  };
+
+  const handleRemoveTask = (taskId: string) => {
+    const newTasks = tasks.filter(task => task.id !== taskId);
+    setTasks(newTasks);
+    groupTasks(newTasks);
   };
 
   return (
@@ -118,6 +137,7 @@ const Board: FC = () => {
               column={taskColumn}
               tasks={taskGroup[taskColumn.status]}
               onAddTask={handleAddTask}
+              onRemoveTask={handleRemoveTask}
             />
           ))}
 
